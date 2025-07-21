@@ -1,0 +1,33 @@
+.layout {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  .label-wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  &.vertical {
+    flex-direction: column;
+
+    .label-wrapper {
+      flex-direction: column-reverse;
+    }
+  }
+
+  &.horizontal {
+    .last-element {
+      margin-left: auto;
+    }
+  }
+}
+
+mat-icon {
+  transition: color 0.25s;
+}
+
+.highlight-device {
+  color: rgba(169, 0, 169, 0.8)
+}

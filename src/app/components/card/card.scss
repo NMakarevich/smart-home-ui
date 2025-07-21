@@ -1,0 +1,32 @@
+mat-card {
+  transition: box-shadow 0.25s;
+
+  &:not(:has(.singleDevice)) {
+    min-width: 250px;
+  }
+}
+
+mat-card-content {
+  display: flex;
+  gap: 10px;
+}
+
+mat-card-header {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.horizontalLayout,
+.singleDevice {
+  flex-direction: row;
+}
+
+.verticalLayout {
+  flex-direction: column;
+}
+
+.highlight-card {
+  box-shadow: 0 0 3px 0 rgba(169, 0, 169, 0.8);
+}
