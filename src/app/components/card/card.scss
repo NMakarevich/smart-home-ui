@@ -30,3 +30,13 @@ mat-card-header {
 .highlight-card {
   box-shadow: 0 0 3px 0 rgba(169, 0, 169, 0.8);
 }
+
+@media (max-width: 600px) {
+  :host {
+    width: 100%;
+  }
+
+  mat-card {
+    width: 100%;
+  }
+}
