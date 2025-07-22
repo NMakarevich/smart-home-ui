@@ -14,18 +14,6 @@
     </div>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-      @if (response$ | async; as response) {
-        @for (tab of response.tabs; track tab) {
-          <mat-tab [label]="tab.title">
-            <div class="tab-content">
-              @for (card of tab.cards; track card) {
-                <app-card [card]="card"/>
-              }
-            </div>
-          </mat-tab>
-        }
-      }
-    </mat-tab-group>
+    <app-dashboard [response$]="response$"/>
   </mat-sidenav-content>
 </mat-sidenav-container>

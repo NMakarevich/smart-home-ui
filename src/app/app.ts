@@ -10,12 +10,11 @@ import { MatIcon } from '@angular/material/icon';
 import { Menu } from './components/menu/menu';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { SidebarFooter } from './components/sidebar-footer/sidebar-footer';
-import { AsyncPipe, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
 import { SmartHomeResponse } from './interfaces/smart-home-response';
-import { Card } from './components/card/card';
+import { Dashboard } from './components/dashboard/dashboard';
 
 @Component({
   selector: 'app-root',
@@ -28,11 +27,8 @@ import { Card } from './components/card/card';
     MatIcon,
     Menu,
     SidebarFooter,
-    AsyncPipe,
-    MatTabGroup,
-    MatTab,
-    Card,
     NgClass,
+    Dashboard,
   ],
   templateUrl: './app.html',
   standalone: true,

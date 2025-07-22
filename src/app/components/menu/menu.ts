@@ -14,7 +14,7 @@ export class Menu {
   menuList: MenuModel[] = [
     {
       icon: 'dashboard',
-      title: 'Overview',
+      title: 'Dashboard',
     },
     {
       icon: 'info',
