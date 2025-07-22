@@ -1,26 +1,31 @@
-<header appHeader>
-  <button matIconButton (click)="sidenav()?.toggle()" [disabled]="!isMobile()">
+<div class="sidenav-toggle-container" [ngClass]="[!isMobile() ? 'hidden' : '', sidenav()?.opened ? 'opened' : '']">
+  <button matIconButton class="sidenav-toggle" (click)="sidenav()?.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
-</header>
+</div>
 <mat-sidenav-container hasBackdrop="false">
   <mat-sidenav mode="push" [autoFocus]="false" [opened]="!isMobile()">
     <div class="sidenav-content">
+      <div class="sidenav-header">
+        <h2>Smart Home UI</h2>
+      </div>
       <app-menu/>
-      <app-sidebar-footer />
+      <app-sidebar-footer/>
     </div>
   </mat-sidenav>
-  <mat-tab-group>
-    @if (response$ | async; as response) {
-      @for (tab of response.tabs; track tab) {
-        <mat-tab [label]="tab.title">
-          <div class="tab-content">
-            @for (card of tab.cards; track card) {
-              <app-card [card]="card"/>
-            }
-          </div>
-        </mat-tab>
+  <mat-sidenav-content>
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+      @if (response$ | async; as response) {
+        @for (tab of response.tabs; track tab) {
+          <mat-tab [label]="tab.title">
+            <div class="tab-content">
+              @for (card of tab.cards; track card) {
+                <app-card [card]="card"/>
+              }
+            </div>
+          </mat-tab>
+        }
       }
-    }
-  </mat-tab-group>
+    </mat-tab-group>
+  </mat-sidenav-content>
 </mat-sidenav-container>

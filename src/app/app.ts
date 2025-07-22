@@ -1,13 +1,16 @@
 import { Component, inject, signal, viewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MatSidenav, MatSidenavContainer } from '@angular/material/sidenav';
-import { Header } from './components/header/header';
+import {
+  MatSidenav,
+  MatSidenavContainer,
+  MatSidenavContent,
+} from '@angular/material/sidenav';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { Menu } from './components/menu/menu';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { SidebarFooter } from './components/sidebar-footer/sidebar-footer';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
@@ -20,7 +23,7 @@ import { Card } from './components/card/card';
     RouterOutlet,
     MatSidenavContainer,
     MatSidenav,
-    Header,
+    MatSidenavContent,
     MatIconButton,
     MatIcon,
     Menu,
@@ -29,6 +32,7 @@ import { Card } from './components/card/card';
     MatTabGroup,
     MatTab,
     Card,
+    NgClass,
   ],
   templateUrl: './app.html',
   standalone: true,
