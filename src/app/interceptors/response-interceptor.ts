@@ -15,14 +15,12 @@ export const responseInterceptor: HttpInterceptorFn = (req, next) => {
         if (event.status === 401) {
           router.navigate(['login']).then(() => {
             auth.logout();
-            auth.clearToken();
           });
         }
 
         if (req.url.endsWith('/user/login') && event.status === 200) {
           const { token } = event.body as LoginResponse;
-          auth.saveToken(token);
-          auth.loginSuccess();
+          auth.loginSuccess(token);
         }
       }
     }),
