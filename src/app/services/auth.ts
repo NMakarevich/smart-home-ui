@@ -37,10 +37,12 @@ export class Auth {
 
   logout() {
     this.authStatus$.next(false);
+    this.clearToken();
   }
 
-  loginSuccess() {
+  loginSuccess(token: string) {
     this.authStatus$.next(true);
+    this.saveToken(token);
   }
 
   clearToken() {
