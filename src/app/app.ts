@@ -1,5 +1,5 @@
 import { Component, inject, signal, viewChild } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import {
   MatSidenav,
   MatSidenavContainer,
@@ -10,11 +10,11 @@ import { MatIcon } from '@angular/material/icon';
 import { Menu } from './components/menu/menu';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { SidebarFooter } from './components/sidebar-footer/sidebar-footer';
-import { NgClass } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { SmartHomeResponse } from './interfaces/smart-home-response';
-import { Dashboard } from './components/dashboard/dashboard';
+import { Auth } from './services/auth';
+import { DashboardsInterface } from './interfaces/smart-home-response';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +28,7 @@ import { Dashboard } from './components/dashboard/dashboard';
     Menu,
     SidebarFooter,
     NgClass,
-    Dashboard,
+    AsyncPipe,
   ],
   templateUrl: './app.html',
   standalone: true,
@@ -36,6 +36,18 @@ import { Dashboard } from './components/dashboard/dashboard';
 })
 export class App {
   protected readonly title = signal('smart-home-ui');
+  private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
+
+  dashboards$ = this.http.get<DashboardsInterface[]>('/dashboards').pipe(
+    tap((dashboards) => {
+      this.router.navigate(['dashboard', dashboards[0].id], {});
+    }),
+  );
+
+  auth = inject(Auth);
+
+  isAuthorized = this.auth.checkToken();
 
   sidenav = viewChild(MatSidenav);
 
@@ -43,10 +55,6 @@ export class App {
 
   private readonly _mobileQuery: MediaQueryList;
   private readonly _mobileQueryListener: () => void;
-
-  response$: Observable<SmartHomeResponse>;
-
-  private readonly http = inject(HttpClient);
 
   constructor() {
     const media = inject(MediaMatcher);
@@ -56,7 +64,5 @@ export class App {
     this._mobileQueryListener = () =>
       this.isMobile.set(this._mobileQuery.matches);
     this._mobileQuery.addEventListener('change', this._mobileQueryListener);
-
-    this.response$ = this.http.get<SmartHomeResponse>('/mock/mock-data.json');
   }
 }
