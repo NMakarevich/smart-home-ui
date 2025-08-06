@@ -7,19 +7,21 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class Auth {
-  http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
-  authStatus$ = new BehaviorSubject(false);
+  authStatus$ = new BehaviorSubject(this.checkToken());
 
-  getAuthStatus() {
+  get authStatus() {
     return this.authStatus$.getValue();
   }
 
   login(login: Login) {
-    return this.http.post<LoginResponse>('/user/login', login);
+    return this.http.post<LoginResponse>('/user/login', login, {
+      observe: 'response',
+    });
   }
 
-  getProfile() {
+  get profile() {
     return this.http.get<Profile>('/user/profile');
   }
 
