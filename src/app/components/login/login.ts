@@ -54,7 +54,7 @@ export class Login {
     this.auth.login(this.loginForm.getRawValue()).subscribe({
       next: () => {
         this.loginForm.setErrors(null);
-        this.router.navigate(['dashboard']);
+        this.router.navigate(['']);
       },
       error: (error) => {
         if (error.status === 401) {
