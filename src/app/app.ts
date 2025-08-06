@@ -10,7 +10,7 @@ import { MatIcon } from '@angular/material/icon';
 import { Menu } from './components/menu/menu';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { SidebarFooter } from './components/sidebar-footer/sidebar-footer';
-import { AsyncPipe, JsonPipe, NgClass } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Auth } from './services/auth';
 import { DashboardsInterface } from './interfaces/smart-home-response';
@@ -29,7 +29,6 @@ import { tap } from 'rxjs';
     SidebarFooter,
     NgClass,
     AsyncPipe,
-    JsonPipe,
   ],
   templateUrl: './app.html',
   standalone: true,
