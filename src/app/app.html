@@ -1,4 +1,4 @@
-@if (isAuthorized) {
+@if (isAuthorized$ | async) {
   <div class="sidenav-toggle-container" [ngClass]="[!isMobile() ? 'hidden' : '', sidenav()?.opened ? 'opened' : '']">
     <button matIconButton class="sidenav-toggle" (click)="sidenav()?.toggle()">
       <mat-icon>{{sidenav()?.opened ? 'menu_open' : 'menu'}}</mat-icon>
@@ -6,7 +6,7 @@
   </div>
 }
 <mat-sidenav-container hasBackdrop="false">
-  @if (isAuthorized) {
+  @if (isAuthorized$ | async) {
     <mat-sidenav mode="push" [autoFocus]="false" [opened]="!isMobile()">
       <div class="sidenav-content">
         <div class="sidenav-header">

@@ -12,7 +12,7 @@ export class Auth {
   authStatus$ = new BehaviorSubject(this.checkToken());
 
   get authStatus() {
-    return this.authStatus$.getValue();
+    return this.authStatus$;
   }
 
   login(login: Login) {
