@@ -1,12 +1,8 @@
 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-  @if (response$() | async; as response) {
-    @for (tab of response.tabs; track tab) {
+  @if (tabs$ | async; as tabs) {
+    @for (tab of tabs.tabs; track tab.title) {
       <mat-tab [label]="tab.title">
-        <div class="tab-content">
-          @for (card of tab.cards; track card) {
-            <app-card [card]="card"/>
-          }
-        </div>
+        <app-tab-content [cards]="tab.cards" />
       </mat-tab>
     }
   }
