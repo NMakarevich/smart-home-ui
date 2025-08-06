@@ -1,4 +1,10 @@
-export interface SmartHomeResponse {
+export interface DashboardsInterface {
+  id: string;
+  title: string;
+  icon: string;
+}
+
+export interface DashboardInterface {
   tabs: Tab[];
 }
 
