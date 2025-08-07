@@ -20,10 +20,6 @@
     </mat-sidenav>
   }
   <mat-sidenav-content>
-    @if (!(dashboards$ | async)) {
-      <div class="empty-dashboard">You don’t have any dashboards yet. They’ll appear here as soon as you create them.</div>
-    } @else {
-      <router-outlet />
-    }
+    <router-outlet />
   </mat-sidenav-content>
 </mat-sidenav-container>

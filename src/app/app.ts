@@ -41,7 +41,8 @@ export class App {
 
   dashboards$ = this.http.get<DashboardsInterface[]>('/dashboards').pipe(
     tap((dashboards) => {
-      this.router.navigate(['dashboard', dashboards[0].id], {});
+      if (dashboards.length)
+        this.router.navigate(['dashboard', dashboards[0].id]);
     }),
   );
 
