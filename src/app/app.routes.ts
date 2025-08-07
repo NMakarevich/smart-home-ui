@@ -8,6 +8,12 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./components/dashboard/dashboard').then((m) => m.Dashboard),
+    canActivate: [authGuard],
+  },
+  {
     path: 'dashboard/:dashboardId',
     loadComponent: () =>
       import('./components/dashboard/dashboard').then((m) => m.Dashboard),
