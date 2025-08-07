@@ -34,8 +34,6 @@ export class Dashboard {
   private readonly router = inject(Router);
   private readonly http = inject(HttpClient);
 
-  links!: string[];
-
   activeLink!: string;
 
   dashboardId!: string | null;
@@ -53,8 +51,9 @@ export class Dashboard {
       }),
       tap((dashboard) => {
         if (dashboard) {
-          this.links = dashboard.tabs.map((tab) => tab.id);
-          this.activeLink = this.links[0];
+          const links = dashboard.tabs.map((tab) => tab.id);
+          this.activeLink =
+            this.activatedRoute.snapshot.paramMap.get('tabId') || links[0];
           this.currentTab = dashboard.tabs.find(
             (tab) => tab.id === this.activeLink,
           )!;
