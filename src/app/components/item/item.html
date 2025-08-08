@@ -1,5 +1,5 @@
 @if (layout() !== 'singleDevice') {
-  <div class="layout" [ngClass]="layout() === 'verticalLayout' ? 'horizontal' : 'vertical'">
+  <div class="layout" [ngClass]="layoutClass()">
     <div class="label-wrapper">
       <mat-icon [appHighlightDevice]="item()">{{ item().icon }}</mat-icon>
       <span>{{ item().label }}</span></div>
