@@ -1,12 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
-import {
-  MatTab,
-  MatTabGroup,
-  MatTabLink,
-  MatTabNav,
-  MatTabNavPanel,
-} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { DashboardInterface, Tab } from '../../interfaces/smart-home-response';
@@ -15,16 +9,7 @@ import { TabContent } from '../tab-content/tab-content';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [
-    AsyncPipe,
-    MatTabGroup,
-    MatTab,
-    MatTabNav,
-    MatTabNavPanel,
-    MatTabLink,
-    RouterLink,
-    TabContent,
-  ],
+  imports: [AsyncPipe, MatTabsModule, RouterLink, TabContent],
   templateUrl: './dashboard.html',
   standalone: true,
   styleUrl: './dashboard.scss',

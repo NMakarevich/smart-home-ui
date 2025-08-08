@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { Auth } from '../../services/auth';
 import { AsyncPipe } from '@angular/common';
-import { MatButton } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar-footer',
-  imports: [AsyncPipe, MatButton, MatIcon],
+  imports: [AsyncPipe, MatButtonModule, MatIcon],
   templateUrl: './sidebar-footer.html',
   standalone: true,
   styleUrl: './sidebar-footer.scss',

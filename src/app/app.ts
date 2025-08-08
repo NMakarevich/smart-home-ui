@@ -1,16 +1,12 @@
 import { Component, inject, signal, viewChild } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import {
-  MatSidenav,
-  MatSidenavContainer,
-  MatSidenavContent,
-} from '@angular/material/sidenav';
-import { MatIconButton } from '@angular/material/button';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { Menu } from './components/menu/menu';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { SidebarFooter } from './components/sidebar-footer/sidebar-footer';
-import { AsyncPipe, NgClass } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Auth } from './services/auth';
 import { DashboardsInterface } from './interfaces/smart-home-response';
@@ -20,15 +16,12 @@ import { tap } from 'rxjs';
   selector: 'app-root',
   imports: [
     RouterOutlet,
-    MatSidenavContainer,
-    MatSidenav,
-    MatSidenavContent,
-    MatIconButton,
+    MatSidenavModule,
+    MatButtonModule,
     MatIcon,
     Menu,
     SidebarFooter,
-    NgClass,
-    AsyncPipe,
+    CommonModule,
   ],
   templateUrl: './app.html',
   standalone: true,

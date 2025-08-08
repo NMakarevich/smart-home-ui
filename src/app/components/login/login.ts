@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButton, MatIconButton } from '@angular/material/button';
-import { MatInput } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import { Auth } from '../../services/auth';
 import {
@@ -23,9 +23,8 @@ interface LoginForm {
   imports: [
     MatFormFieldModule,
     MatIcon,
-    MatIconButton,
-    MatInput,
-    MatButton,
+    MatInputModule,
+    MatButtonModule,
     ReactiveFormsModule,
   ],
   templateUrl: './login.html',
