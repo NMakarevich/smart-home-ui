@@ -45,7 +45,7 @@ export class App {
 
   sidenav = viewChild(MatSidenav);
 
-  protected readonly isMobile = signal(true);
+  readonly isMobile = signal(true);
 
   private readonly _mobileQuery: MediaQueryList;
   private readonly _mobileQueryListener: () => void;
