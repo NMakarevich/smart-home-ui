@@ -1,0 +1,13 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 300px;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 4px rgba(169, 0, 169, 0.5);
+}
+
+mat-error {
+  min-height: 16px;
+}

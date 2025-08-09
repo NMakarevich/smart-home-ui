@@ -1,2 +1,9 @@
-<img src="/favicon.ico" alt="avatar">
-<span>Auth/Login</span>
+@if (profile$ | async; as profile) {
+  <div class="profile">
+    <div class="profile-initials">{{profile.initials}}</div>
+    <span class="profile-fullname">{{profile.fullName}}</span>
+  </div>
+  <button matButton="filled" (click)="logout()">
+    <mat-icon>logout</mat-icon> Logout
+  </button>
+}

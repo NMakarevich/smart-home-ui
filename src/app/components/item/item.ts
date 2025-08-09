@@ -11,7 +11,7 @@ import {
 } from '@angular/material/slide-toggle';
 import { HighlightDevice } from '../../directives/highlight-device';
 import { MatIconButton } from '@angular/material/button';
-import { NgClass } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-item',
@@ -21,7 +21,7 @@ import { NgClass } from '@angular/common';
     MatSlideToggle,
     HighlightDevice,
     MatIconButton,
-    NgClass,
+    CommonModule,
   ],
   templateUrl: './item.html',
   standalone: true,
@@ -33,6 +33,10 @@ export class Item {
   item = model.required<ItemInterface>();
 
   toggleDevice = output<boolean>();
+
+  layoutClass() {
+    return this.layout() === 'verticalLayout' ? 'horizontal' : 'vertical';
+  }
 
   onToggleDevice(event?: MatSlideToggleChange) {
     if (event) this.item.update((item) => ({ ...item, state: event.checked }));

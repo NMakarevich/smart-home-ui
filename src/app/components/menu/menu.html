@@ -1,11 +1,11 @@
 <mat-list>
-  @for (item of menuList; track item) {
+  @for (item of dashboards(); track item) {
     <mat-list-item>
-      <div class="mat-list-item__content">@if (item.icon) {
-        <mat-icon>{{ item.icon }}</mat-icon>
+      <a mat-list-item [routerLink]="['dashboard', item.id]" class="mat-list-item__content">@if (item.icon) {
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
       }
         {{ item.title }}
-      </div>
+      </a>
     </mat-list-item>
   }
 </mat-list>

@@ -1,0 +1,22 @@
+<form class="form" [formGroup]="loginForm" (ngSubmit)="submit()">
+  <mat-form-field>
+    <mat-label>Enter username</mat-label>
+    <input matInput type="text" formControlName="userName">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Enter your password</mat-label>
+    <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="password" autocomplete />
+    <button
+      matIconButton
+      matSuffix
+      type="button"
+      (click)="togglePassword($event)"
+      [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hidePassword()"
+    >
+      <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+  </mat-form-field>
+  <button matButton="filled" type="submit" [disabled]="!loginForm.valid">Login</button>
+  <mat-error>{{loginForm.getError('loginError')}}</mat-error>
+</form>

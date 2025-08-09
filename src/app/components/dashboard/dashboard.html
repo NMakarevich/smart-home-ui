@@ -1,13 +1,14 @@
-<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-  @if (response$() | async; as response) {
-    @for (tab of response.tabs; track tab) {
-      <mat-tab [label]="tab.title">
-        <div class="tab-content">
-          @for (card of tab.cards; track card) {
-            <app-card [card]="card"/>
-          }
-        </div>
-      </mat-tab>
+@if (tabs$ | async; as tabs) {
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+    @for (tab of tabs.tabs; track tab.title) {
+      <a mat-tab-link
+         [routerLink]="['..', tab.id]"
+         (click)="activeLink = tab.id"
+         [active]="activeLink == tab.id"> {{tab.id}} </a>
     }
-  }
-</mat-tab-group>
+  </nav>
+  <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+  <app-tab-content [cards]="currentTab.cards" />
+} @else {
+  <div class="empty-dashboard">You don’t have any dashboards yet. They’ll appear here as soon as you create them.</div>
+}

@@ -2,10 +2,24 @@
   margin-top: auto;
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 20px;
   padding: 16px;
   border-top: 2px solid rgba(0, 0, 0, 0.3);
   box-sizing: border-box;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  &-initials {
+    padding: 10px;
+    font-size: 24px;
+    border: 1px solid #a900a9;
+    border-radius: 50%;
+  }
 }

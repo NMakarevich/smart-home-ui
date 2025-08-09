@@ -1,19 +1,25 @@
-<div class="sidenav-toggle-container" [ngClass]="[!isMobile() ? 'hidden' : '', sidenav()?.opened ? 'opened' : '']">
-  <button matIconButton class="sidenav-toggle" (click)="sidenav()?.toggle()">
-    <mat-icon>{{sidenav()?.opened ? 'menu_open' : 'menu'}}</mat-icon>
-  </button>
-</div>
+@if (isAuthorized$ | async) {
+  <div class="sidenav-toggle-container" [ngClass]="[!isMobile() ? 'hidden' : '', sidenav()?.opened ? 'opened' : '']">
+    <button matIconButton class="sidenav-toggle" (click)="sidenav()?.toggle()">
+      <mat-icon>{{sidenav()?.opened ? 'menu_open' : 'menu'}}</mat-icon>
+    </button>
+  </div>
+}
 <mat-sidenav-container hasBackdrop="false">
-  <mat-sidenav mode="push" [autoFocus]="false" [opened]="!isMobile()">
-    <div class="sidenav-content">
-      <div class="sidenav-header">
-        <h2>Smart Home UI</h2>
+  @if (isAuthorized$ | async) {
+    <mat-sidenav mode="push" [autoFocus]="false" [opened]="!isMobile()">
+      <div class="sidenav-content">
+        <div class="sidenav-header">
+          <h2>Smart Home UI</h2>
+        </div>
+        @if (dashboards$ | async; as dashboards) {
+          <app-menu [dashboards]="dashboards" />
+        }
+        <app-sidebar-footer/>
       </div>
-      <app-menu/>
-      <app-sidebar-footer/>
-    </div>
-  </mat-sidenav>
+    </mat-sidenav>
+  }
   <mat-sidenav-content>
-    <app-dashboard [response$]="response$"/>
+    <router-outlet />
   </mat-sidenav-content>
 </mat-sidenav-container>
