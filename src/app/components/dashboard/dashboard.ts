@@ -33,7 +33,7 @@ export class Dashboard {
         return id ? this.dashboardService.getDashboard(id) : of(null);
       }),
       tap((dashboard) => {
-        if (dashboard) {
+        if (dashboard && dashboard.tabs.length) {
           const links = dashboard.tabs.map((tab) => tab.id);
           this.activeLink =
             this.activatedRoute.snapshot.paramMap.get('tabId') || links[0];
