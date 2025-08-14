@@ -1,4 +1,8 @@
 @if (profile$ | async; as profile) {
+  <button matButton (click)="addDashboard()">
+    <mat-icon>add</mat-icon>
+    Add Dashboard
+  </button>
   <div class="profile">
     <div class="profile-initials">{{profile.initials}}</div>
     <span class="profile-fullname">{{profile.fullName}}</span>
