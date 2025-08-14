@@ -2,10 +2,10 @@ import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { DashboardInterface, Tab } from '../../interfaces/smart-home-response';
 import { Observable, of, switchMap, tap } from 'rxjs';
 import { TabContent } from '../tab-content/tab-content';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +17,7 @@ import { TabContent } from '../tab-content/tab-content';
 export class Dashboard {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly http = inject(HttpClient);
+  private readonly dashboardService = inject(DashboardService);
 
   activeLink!: string;
 
@@ -30,9 +30,7 @@ export class Dashboard {
       switchMap((params) => {
         const id = params.get('dashboardId');
         this.dashboardId = id;
-        return id
-          ? this.http.get<DashboardInterface>(`/dashboards/${id}`)
-          : of(null);
+        return id ? this.dashboardService.getDashboard(id) : of(null);
       }),
       tap((dashboard) => {
         if (dashboard) {

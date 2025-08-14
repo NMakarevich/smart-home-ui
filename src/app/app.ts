@@ -7,10 +7,9 @@ import { Menu } from './components/menu/menu';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { SidebarFooter } from './components/sidebar-footer/sidebar-footer';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Auth } from './services/auth';
-import { DashboardsInterface } from './interfaces/smart-home-response';
 import { tap } from 'rxjs';
+import { DashboardService } from './services/dashboard.service';
 
 @Component({
   selector: 'app-root',
@@ -29,10 +28,10 @@ import { tap } from 'rxjs';
 })
 export class App {
   protected readonly title = signal('smart-home-ui');
-  private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
+  private readonly dashboardService = inject(DashboardService);
 
-  dashboards$ = this.http.get<DashboardsInterface[]>('/dashboards').pipe(
+  dashboards$ = this.dashboardService.getDashboards().pipe(
     tap((dashboards) => {
       if (dashboards.length)
         this.router.navigate(['dashboard', dashboards[0].id]);
