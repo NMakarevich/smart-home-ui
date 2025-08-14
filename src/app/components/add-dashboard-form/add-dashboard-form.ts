@@ -13,6 +13,7 @@ import { DialogService } from '../../services/dialog.service';
 import { uniqueDashboardId } from '../../utils/validators';
 import { DashboardService } from '../../services/dashboard.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 interface DashboardForm {
   id: FormControl<string>;
@@ -36,6 +37,7 @@ export class AddDashboardForm {
   private readonly fb = inject(FormBuilder);
   private readonly dialog = inject(DialogService);
   private readonly dashboardService = inject(DashboardService);
+  private readonly router = inject(Router);
   private subscription!: Subscription;
 
   dashboardForm: FormGroup<DashboardForm> = this.fb.nonNullable.group(
@@ -69,7 +71,10 @@ export class AddDashboardForm {
     this.subscription = this.dashboardService
       .addDashboard(this.dashboardForm.getRawValue())
       .subscribe((response) => {
-        if (response.ok) this.dialog.closeDialog();
+        if (response.ok) {
+          this.dialog.closeDialog();
+          this.router.navigate(['dashboard', this.id?.value]);
+        }
       });
   }
 
