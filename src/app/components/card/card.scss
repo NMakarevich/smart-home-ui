@@ -18,6 +18,10 @@ mat-card-header {
   margin-bottom: 10px;
 }
 
+.horizontalLayout {
+  justify-content: space-between;
+}
+
 .horizontalLayout,
 .singleDevice {
   flex-direction: row;
