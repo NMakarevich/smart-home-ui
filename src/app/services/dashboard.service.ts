@@ -18,4 +18,10 @@ export class DashboardService {
   getDashboard(dashboardId: string) {
     return this.http.get<DashboardInterface>(`/dashboards/${dashboardId}`);
   }
+
+  addDashboard(dashboard: DashboardsInterface) {
+    return this.http.post<DashboardInterface>(`/dashboards`, dashboard, {
+      observe: 'response',
+    });
+  }
 }
