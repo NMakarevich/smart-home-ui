@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {
   DashboardInterface,
@@ -10,6 +10,20 @@ import {
 })
 export class DashboardService {
   private readonly http = inject(HttpClient);
+
+  isEditMode = signal(false);
+
+  get isEditModeStatus() {
+    return this.isEditMode;
+  }
+
+  enterEditMode() {
+    this.isEditMode.set(true);
+  }
+
+  closeEditMode() {
+    this.isEditMode.set(false);
+  }
 
   getDashboards() {
     return this.http.get<DashboardsInterface[]>('/dashboards');

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -14,6 +14,7 @@ import {
   selectCurrentTab,
 } from '../../store/dashboard.selectors';
 import * as DashboardActions from '../../store/dashboard.actions';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -34,8 +35,9 @@ import * as DashboardActions from '../../store/dashboard.actions';
 export class Dashboard implements OnInit {
   private readonly store = inject(Store);
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly dashboardService = inject(DashboardService);
 
-  isEditMode = signal(false);
+  isEditMode = this.dashboardService.isEditModeStatus;
 
   activeLink!: string;
 
@@ -67,11 +69,11 @@ export class Dashboard implements OnInit {
   }
 
   enterEditMode() {
-    this.isEditMode.set(true);
+    this.dashboardService.enterEditMode();
   }
 
   closeEditMode() {
-    this.isEditMode.set(false);
+    this.dashboardService.closeEditMode();
   }
 
   deleteDashboard() {
