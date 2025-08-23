@@ -11,9 +11,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { DialogService } from '../../services/dialog.service';
 import { uniqueDashboardId } from '../../utils/validators';
-import { DashboardService } from '../../services/dashboard.service';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { addDashboard } from '../../store/dashboard.actions';
 
 interface DashboardForm {
   id: FormControl<string>;
@@ -36,9 +36,8 @@ interface DashboardForm {
 export class AddDashboardForm {
   private readonly fb = inject(FormBuilder);
   private readonly dialog = inject(DialogService);
-  private readonly dashboardService = inject(DashboardService);
-  private readonly router = inject(Router);
   private subscription!: Subscription;
+  private readonly store = inject(Store);
 
   dashboardForm: FormGroup<DashboardForm> = this.fb.nonNullable.group(
     {
@@ -50,9 +49,7 @@ export class AddDashboardForm {
       title: ['', [Validators.required]],
       icon: ['', [Validators.required]],
     },
-    {
-      updateOn: 'blur',
-    },
+    { updateOn: 'change' },
   );
 
   get id() {
@@ -68,14 +65,9 @@ export class AddDashboardForm {
   }
 
   onSubmit() {
-    this.subscription = this.dashboardService
-      .addDashboard(this.dashboardForm.getRawValue())
-      .subscribe((response) => {
-        if (response.ok) {
-          this.dialog.closeDialog();
-          this.router.navigate(['dashboard', this.id?.value]);
-        }
-      });
+    this.store.dispatch(
+      addDashboard({ dashboard: this.dashboardForm.getRawValue() }),
+    );
   }
 
   onClose() {

@@ -1,14 +1,32 @@
 @if (tabs$ | async; as tabs) {
-    <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+  @if (!isEditMode()) {
+    <nav class="dashboard-nav" mat-tab-nav-bar [tabPanel]="tabPanel">
       @for (tab of tabs.tabs; track tab.title) {
         <a mat-tab-link
-           [routerLink]="['..', tab.id]"
-           (click)="activeLink = tab.id"
-           [active]="activeLink == tab.id"> {{tab.id}} </a>
+           [routerLink]="['/dashboard', dashboardId, tab.id]"
+           (click)="changeActiveTab(tab.id)"
+           [active]="activeLink == tab.id"> {{tab.title}} </a>
       }
+      <div class="dashboard-controls">
+        <button matIconButton type="button" (click)="enterEditMode()">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button matIconButton type="button" (click)="deleteDashboard()">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
     </nav>
+  } @else {
+      <mat-form-field>
+        <input matInput type="text">
+      </mat-form-field>
+      <div class="dashboard-controls">
+        <button matButton="filled" type="button" (click)="closeEditMode()">Cancel</button>
+        <button matButton="filled" type="button">Save</button>
+      </div>
+  }
     <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
-  @if (currentTab) {
+  @if (currentTab$ | async; as currentTab) {
     <app-tab-content [cards]="currentTab.cards" />
   }
 } @else {

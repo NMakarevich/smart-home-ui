@@ -1,5 +1,5 @@
 import { Component, inject, signal, viewChild } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -8,8 +8,9 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { SidebarFooter } from './components/sidebar-footer/sidebar-footer';
 import { CommonModule } from '@angular/common';
 import { Auth } from './services/auth';
-import { tap } from 'rxjs';
-import { DashboardService } from './services/dashboard.service';
+import { Store } from '@ngrx/store';
+import { selectDashboardList } from './store/dashboard.selectors';
+import * as DashboardActions from './store/dashboard.actions';
 
 @Component({
   selector: 'app-root',
@@ -28,15 +29,9 @@ import { DashboardService } from './services/dashboard.service';
 })
 export class App {
   protected readonly title = signal('smart-home-ui');
-  private readonly router = inject(Router);
-  private readonly dashboardService = inject(DashboardService);
+  private readonly store = inject(Store);
 
-  dashboards$ = this.dashboardService.getDashboards().pipe(
-    tap((dashboards) => {
-      if (dashboards.length)
-        this.router.navigate(['dashboard', dashboards[0].id]);
-    }),
-  );
+  dashboards$ = this.store.select(selectDashboardList);
 
   auth = inject(Auth);
 
@@ -50,6 +45,7 @@ export class App {
   private readonly _mobileQueryListener: () => void;
 
   constructor() {
+    this.store.dispatch(DashboardActions.loadDashboards());
     const media = inject(MediaMatcher);
 
     this._mobileQuery = media.matchMedia('(max-width: 600px)');

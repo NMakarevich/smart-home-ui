@@ -5,18 +5,21 @@ import {
 } from '@angular/forms';
 import { catchError, debounceTime, map, Observable, of, switchMap } from 'rxjs';
 import { inject } from '@angular/core';
-import { DashboardsInterface } from '../interfaces/smart-home-response';
-import { DashboardService } from '../services/dashboard.service';
+import { Store } from '@ngrx/store';
+import { selectDashboardList } from '../store/dashboard.selectors';
 
 export function uniqueDashboardId(): AsyncValidatorFn {
-  const dashboardService = inject(DashboardService);
+  const store = inject(Store);
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
     return of(control.value).pipe(
       debounceTime(1000), // why it doesn't work if form updateOn: change?
-      switchMap((id) =>
-        dashboardService.getDashboards().pipe(
-          map((dashboards: DashboardsInterface[]) => {
-            return !!dashboards.find((dashboard) => dashboard.id === id)
+      switchMap(() =>
+        store.select(selectDashboardList).pipe(
+          map((dashboards) => {
+            if (!dashboards) return null;
+            return !!dashboards.find(
+              (dashboard) => dashboard.id === control.value,
+            )
               ? { uniqueId: { message: 'Id should be unique' } }
               : null;
           }),

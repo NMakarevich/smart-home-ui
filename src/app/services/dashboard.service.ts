@@ -20,7 +20,13 @@ export class DashboardService {
   }
 
   addDashboard(dashboard: DashboardsInterface) {
-    return this.http.post<DashboardInterface>(`/dashboards`, dashboard, {
+    return this.http.post<DashboardsInterface>(`/dashboards`, dashboard, {
+      observe: 'response',
+    });
+  }
+
+  deleteDashboard(dashboardId: string) {
+    return this.http.delete(`/dashboards/${dashboardId}`, {
       observe: 'response',
     });
   }

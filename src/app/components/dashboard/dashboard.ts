@@ -1,53 +1,81 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { DashboardInterface, Tab } from '../../interfaces/smart-home-response';
-import { Observable, of, switchMap, tap } from 'rxjs';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TabContent } from '../tab-content/tab-content';
-import { DashboardService } from '../../services/dashboard.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { Store } from '@ngrx/store';
+import { deleteDashboard, saveTabId } from '../../store/dashboard.actions';
+import {
+  selectCurrentDashboard,
+  selectCurrentTab,
+} from '../../store/dashboard.selectors';
+import * as DashboardActions from '../../store/dashboard.actions';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [AsyncPipe, MatTabsModule, RouterLink, TabContent],
+  imports: [
+    AsyncPipe,
+    MatTabsModule,
+    RouterLink,
+    TabContent,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
   templateUrl: './dashboard.html',
   standalone: true,
   styleUrl: './dashboard.scss',
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
+  private readonly store = inject(Store);
   private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly router = inject(Router);
-  private readonly dashboardService = inject(DashboardService);
+
+  isEditMode = signal(false);
 
   activeLink!: string;
 
   dashboardId!: string | null;
 
-  currentTab!: Tab;
+  currentTab$ = this.store.select(selectCurrentTab);
 
-  tabs$: Observable<DashboardInterface | null> =
-    this.activatedRoute.paramMap.pipe(
-      switchMap((params) => {
-        const id = params.get('dashboardId');
-        this.dashboardId = id;
-        return id ? this.dashboardService.getDashboard(id) : of(null);
-      }),
-      tap((dashboard) => {
-        if (dashboard && dashboard.tabs.length) {
-          const links = dashboard.tabs.map((tab) => tab.id);
-          this.activeLink =
-            this.activatedRoute.snapshot.paramMap.get('tabId') || links[0];
-          this.currentTab = dashboard.tabs.find(
-            (tab) => tab.id === this.activeLink,
-          )!;
-          if (!this.activatedRoute.snapshot.paramMap.get('tabId')) {
-            this.router.navigate([
-              'dashboard',
-              this.activatedRoute.snapshot.paramMap.get('dashboardId'),
-              this.activeLink,
-            ]);
-          }
-        }
-      }),
-    );
+  tabs$ = this.store.select(selectCurrentDashboard);
+
+  ngOnInit() {
+    this.activatedRoute.paramMap.subscribe((params) => {
+      const dashboardId = params.get('dashboardId');
+      const tabId = params.get('tabId');
+      if (dashboardId) {
+        this.dashboardId = dashboardId;
+        this.store.dispatch(DashboardActions.saveDashboardId({ dashboardId }));
+      }
+      if (tabId) {
+        this.activeLink = tabId;
+        this.store.dispatch(DashboardActions.saveTabId({ tabId }));
+      }
+    });
+    this.store.dispatch(DashboardActions.loadDashboards());
+  }
+
+  changeActiveTab(tabId: string) {
+    this.store.dispatch(saveTabId({ tabId }));
+    this.activeLink = tabId;
+  }
+
+  enterEditMode() {
+    this.isEditMode.set(true);
+  }
+
+  closeEditMode() {
+    this.isEditMode.set(false);
+  }
+
+  deleteDashboard() {
+    if (this.dashboardId)
+      this.store.dispatch(deleteDashboard({ dashboardId: this.dashboardId }));
+  }
 }
