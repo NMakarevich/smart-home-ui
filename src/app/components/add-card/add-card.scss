@@ -1,0 +1,17 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+.card-types {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.close-button {
+  width: 64px;
+  align-self: flex-end;
+}

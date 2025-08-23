@@ -1,0 +1,9 @@
+<h2>Add card</h2>
+<div class="card-types">
+  @for (type of cardLayoutTypes; track type.type) {
+    <button matButton="filled" (click)="addCard(type.type)">
+      {{type.label}}
+    </button>
+  }
+</div>
+<button matButton="tonal" class="close-button" (click)="closeDialog()">Close</button>
