@@ -9,10 +9,10 @@ import { BehaviorSubject } from 'rxjs';
 export class Auth {
   private readonly http = inject(HttpClient);
 
-  authStatus$ = new BehaviorSubject(this.checkToken());
+  private authStatus$ = new BehaviorSubject(this.checkToken());
 
   get authStatus() {
-    return this.authStatus$;
+    return this.authStatus$.asObservable();
   }
 
   login(login: Login) {
