@@ -39,18 +39,15 @@ export class AddDashboardForm {
   private subscription!: Subscription;
   private readonly store = inject(Store);
 
-  dashboardForm: FormGroup<DashboardForm> = this.fb.nonNullable.group(
-    {
-      id: [
-        '',
-        [Validators.required, Validators.maxLength(30)],
-        [uniqueDashboardId()],
-      ],
-      title: ['', [Validators.required]],
-      icon: ['', [Validators.required]],
-    },
-    { updateOn: 'change' },
-  );
+  dashboardForm: FormGroup<DashboardForm> = this.fb.nonNullable.group({
+    id: [
+      '',
+      [Validators.required, Validators.maxLength(30)],
+      [uniqueDashboardId()],
+    ],
+    title: ['', [Validators.required]],
+    icon: ['', [Validators.required]],
+  });
 
   get id() {
     return this.dashboardForm.get('id');
