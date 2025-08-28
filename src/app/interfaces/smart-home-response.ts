@@ -29,6 +29,7 @@ export type CardLayoutType =
 type ItemType = 'sensor' | 'device';
 
 export interface ItemInterface {
+  id: string;
   icon: string;
   label: string;
   type: ItemType;

@@ -7,7 +7,7 @@
   </mat-card-header>
   <mat-card-content [appCardLayout]="card().layout">
     @for (item of card().items; track item.label) {
-      <app-item [item]="item" [layout]="card().layout" (toggleDevice)="onToggleDevice(item)"/>
+      <app-item [item]="item" [layout]="card().layout"/>
     }
   </mat-card-content>
 </mat-card>

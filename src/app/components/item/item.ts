@@ -1,4 +1,4 @@
-import { Component, input, model, output } from '@angular/core';
+import { Component, inject, input, model } from '@angular/core';
 import {
   CardLayoutType,
   ItemInterface,
@@ -12,6 +12,8 @@ import {
 import { HighlightDevice } from '../../directives/highlight-device';
 import { MatIconButton } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { toggleDevice } from '../../store/dashboard.actions';
 
 @Component({
   selector: 'app-item',
@@ -28,19 +30,24 @@ import { CommonModule } from '@angular/common';
   styleUrl: './item.scss',
 })
 export class Item {
+  private readonly store = inject(Store);
+
   layout = input.required<CardLayoutType>();
 
   item = model.required<ItemInterface>();
-
-  toggleDevice = output<boolean>();
 
   layoutClass() {
     return this.layout() === 'verticalLayout' ? 'horizontal' : 'vertical';
   }
 
-  onToggleDevice(event?: MatSlideToggleChange) {
-    if (event) this.item.update((item) => ({ ...item, state: event.checked }));
-    else this.item.update((item) => ({ ...item, state: !item.state }));
-    this.toggleDevice.emit(this.item().state!);
+  toggleDevice(event?: MatSlideToggleChange) {
+    if (event)
+      this.store.dispatch(
+        toggleDevice({ deviceId: this.item().id, state: event.checked }),
+      );
+    else
+      this.store.dispatch(
+        toggleDevice({ deviceId: this.item().id, state: !this.item().state }),
+      );
   }
 }

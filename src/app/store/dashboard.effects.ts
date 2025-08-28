@@ -11,6 +11,7 @@ import {
   selectIds,
 } from './dashboard.selectors';
 import { DialogService } from '../services/dialog.service';
+import { DeviceService } from '../services/device.service';
 
 export const loadDashboardList = createEffect(
   (
@@ -167,4 +168,24 @@ export const deleteDashboardSuccessful = createEffect(
       }),
     ),
   { functional: true, dispatch: false },
+);
+
+export const toggleDevice = createEffect(
+  (actions$ = inject(Actions), deviceService = inject(DeviceService)) =>
+    actions$.pipe(
+      ofType(DashboardActions.toggleDevice),
+      switchMap(({ deviceId, state }) =>
+        deviceService.toggleDevice(deviceId, state).pipe(
+          map((response) => {
+            if (response.ok) return DashboardActions.toggleDeviceSuccessful();
+            else
+              return DashboardActions.toggleDevice({
+                deviceId,
+                state: !state,
+              });
+          }),
+        ),
+      ),
+    ),
+  { functional: true },
 );

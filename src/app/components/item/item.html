@@ -6,14 +6,14 @@
     @if (item().type === 'sensor') {
       <span class="last-element">{{item().value! | sensorValue}}</span>
     } @else {
-      <mat-slide-toggle class="last-element" [checked]="item().state" (change)="onToggleDevice($event)" />
+      <mat-slide-toggle class="last-element" [checked]="item().state" (change)="toggleDevice($event)" />
     }
   </div>
 } @else {
   <div class="layout horizontal">
     <span>{{item().label}}</span>
     @if (item().type === 'device') {
-      <button matIconButton (click)="onToggleDevice()">
+      <button matIconButton (click)="toggleDevice()">
         <mat-icon [appHighlightDevice]="item()">{{ item().icon }}
         </mat-icon>
       </button>

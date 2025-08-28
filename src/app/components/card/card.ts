@@ -1,8 +1,5 @@
-import { Component, computed, model } from '@angular/core';
-import {
-  CardInterface,
-  ItemInterface,
-} from '../../interfaces/smart-home-response';
+import { Component, computed, inject, model } from '@angular/core';
+import { CardInterface } from '../../interfaces/smart-home-response';
 import { MatCardModule } from '@angular/material/card';
 import { CardLayout } from '../../directives/card-layout';
 import { Item } from '../item/item';
@@ -11,6 +8,8 @@ import {
   MatSlideToggleChange,
 } from '@angular/material/slide-toggle';
 import { HighlightCard } from '../../directives/highlight-card';
+import { Store } from '@ngrx/store';
+import { toggleDevice } from '../../store/dashboard.actions';
 
 @Component({
   selector: 'app-card',
@@ -20,6 +19,8 @@ import { HighlightCard } from '../../directives/highlight-card';
   standalone: true,
 })
 export class Card {
+  private readonly store = inject(Store);
+
   card = model.required<CardInterface>();
 
   deviceCount = computed(
@@ -33,20 +34,11 @@ export class Card {
   });
 
   toggleDevices(event: MatSlideToggleChange) {
-    this.card.update((card) => ({
-      ...card,
-      items: card.items.map((item) =>
-        item.type === 'device' ? { ...item, state: event.checked } : item,
-      ),
-    }));
-  }
-
-  onToggleDevice(event: ItemInterface) {
-    this.card.update((card) => ({
-      ...card,
-      items: card.items.map((item) =>
-        item.label === event.label ? { ...item, state: !event.state } : item,
-      ),
-    }));
+    this.card().items.forEach((item) => {
+      if (item.type === 'device')
+        this.store.dispatch(
+          toggleDevice({ deviceId: item.id, state: event.checked }),
+        );
+    });
   }
 }

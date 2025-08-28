@@ -47,3 +47,10 @@ export const deleteDashboardSuccessful = createAction(
 export const deleteDashboardError = createAction(
   '[Dashboard] Delete Dashboard error',
 );
+export const toggleDevice = createAction(
+  '[Device] Toggle Device',
+  props<{ deviceId: string; state: boolean }>(),
+);
+export const toggleDeviceSuccessful = createAction(
+  '[Device] Toggle Device Successful',
+);
