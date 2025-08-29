@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 import { TabContent } from '../tab-content/tab-content';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,9 +12,12 @@ import { deleteDashboard, saveTabId } from '../../store/dashboard.actions';
 import {
   selectCurrentDashboard,
   selectCurrentTab,
+  selectDashboardId,
+  selectTabId,
 } from '../../store/dashboard.selectors';
 import * as DashboardActions from '../../store/dashboard.actions';
 import { DashboardService } from '../../services/dashboard.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,45 +30,38 @@ import { DashboardService } from '../../services/dashboard.service';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
+    RouterOutlet,
   ],
   templateUrl: './dashboard.html',
   standalone: true,
   styleUrl: './dashboard.scss',
 })
-export class Dashboard implements OnInit {
+export class Dashboard {
   private readonly store = inject(Store);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly dashboardService = inject(DashboardService);
 
   isEditMode = this.dashboardService.isEditModeStatus;
 
-  activeLink!: string;
+  activeLink = toSignal(this.store.select(selectTabId));
 
-  dashboardId!: string | null;
+  dashboardId = toSignal(this.store.select(selectDashboardId));
 
-  currentTab$ = this.store.select(selectCurrentTab);
+  currentTab = toSignal(this.store.select(selectCurrentTab));
 
-  tabs$ = this.store.select(selectCurrentDashboard);
+  dashboard = toSignal(this.store.select(selectCurrentDashboard));
 
-  ngOnInit() {
+  constructor() {
     this.activatedRoute.paramMap.subscribe((params) => {
       const dashboardId = params.get('dashboardId');
-      const tabId = params.get('tabId');
       if (dashboardId) {
-        this.dashboardId = dashboardId;
         this.store.dispatch(DashboardActions.saveDashboardId({ dashboardId }));
       }
-      if (tabId) {
-        this.activeLink = tabId;
-        this.store.dispatch(DashboardActions.saveTabId({ tabId }));
-      }
     });
-    this.store.dispatch(DashboardActions.loadDashboards());
   }
 
   changeActiveTab(tabId: string) {
     this.store.dispatch(saveTabId({ tabId }));
-    this.activeLink = tabId;
   }
 
   enterEditMode() {
@@ -77,7 +73,9 @@ export class Dashboard implements OnInit {
   }
 
   deleteDashboard() {
-    if (this.dashboardId)
-      this.store.dispatch(deleteDashboard({ dashboardId: this.dashboardId }));
+    if (this.dashboardId())
+      this.store.dispatch(
+        deleteDashboard({ dashboardId: this.dashboardId()! }),
+      );
   }
 }
