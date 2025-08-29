@@ -28,6 +28,7 @@
     <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
   @if (currentTab$ | async; as currentTab) {
     <app-tab-content [cards]="currentTab.cards" />
+    <router-outlet />
   }
 } @else {
   <div class="empty-dashboard">You don’t have any dashboards yet. They’ll appear here as soon as you create them.</div>

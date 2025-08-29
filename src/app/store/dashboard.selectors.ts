@@ -37,3 +37,7 @@ export const selectCurrentTab = createSelector(
     );
   },
 );
+
+export const selectCards = createSelector(selectCurrentTab, (tab) => {
+  return tab ? tab.cards : null;
+});

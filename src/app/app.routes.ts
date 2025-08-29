@@ -18,12 +18,16 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/dashboard/dashboard').then((m) => m.Dashboard),
     canActivate: [authGuard],
-  },
-  {
-    path: 'dashboard/:dashboardId/:tabId',
-    loadComponent: () =>
-      import('./components/dashboard/dashboard').then((m) => m.Dashboard),
-    canActivate: [authGuard],
+    children: [
+      {
+        path: ':tabId',
+        loadComponent: () =>
+          import('./components/tab-content/tab-content').then(
+            (m) => m.TabContent,
+          ),
+        canActivate: [authGuard],
+      },
+    ],
   },
   {
     path: 'login',
