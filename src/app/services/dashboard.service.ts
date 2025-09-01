@@ -1,0 +1,47 @@
+import { inject, Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import {
+  DashboardInterface,
+  DashboardsInterface,
+} from '../interfaces/smart-home-response';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class DashboardService {
+  private readonly http = inject(HttpClient);
+
+  isEditMode = signal(false);
+
+  get isEditModeStatus() {
+    return this.isEditMode;
+  }
+
+  enterEditMode() {
+    this.isEditMode.set(true);
+  }
+
+  closeEditMode() {
+    this.isEditMode.set(false);
+  }
+
+  getDashboards() {
+    return this.http.get<DashboardsInterface[]>('/dashboards');
+  }
+
+  getDashboard(dashboardId: string) {
+    return this.http.get<DashboardInterface>(`/dashboards/${dashboardId}`);
+  }
+
+  addDashboard(dashboard: DashboardsInterface) {
+    return this.http.post<DashboardsInterface>(`/dashboards`, dashboard, {
+      observe: 'response',
+    });
+  }
+
+  deleteDashboard(dashboardId: string) {
+    return this.http.delete(`/dashboards/${dashboardId}`, {
+      observe: 'response',
+    });
+  }
+}

@@ -1,0 +1,34 @@
+<h3 class="dialog-title">Add Dashboard</h3>
+<form class="dialog-form" [formGroup]="dashboardForm" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <mat-label>ID</mat-label>
+    <input matInput type="text" id="id" formControlName="id">
+    @if (id?.hasError('maxlength')) {
+      <mat-error>Id is too long. Max id length is 30.</mat-error>
+    }
+    @if (id?.hasError('required')) {
+      <mat-error>Please enter the id</mat-error>
+    }
+    @if (id?.hasError('uniqueId')) {
+      <mat-error>{{id?.getError('uniqueId').message}}</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Title</mat-label>
+    <input matInput type="text" formControlName="title">
+    @if (title?.hasError('required')) {
+      <mat-error>Please enter the title.</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Icon</mat-label>
+    <input matInput type="text" formControlName="icon">
+    @if (icon?.hasError('required')) {
+      <mat-error>Please enter the icon name from <a href="https://fonts.google.com/icons" target="_blank">Google Icons</a>.</mat-error>
+    }
+  </mat-form-field>
+  <div class="dialog-controls">
+    <button matButton="filled" type="button" (click)="onClose()">Close</button>
+    <button matButton="filled" type="submit" [disabled]="dashboardForm.invalid">Add Dashboard</button>
+  </div>
+</form>

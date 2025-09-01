@@ -1,0 +1,36 @@
+@if (dashboard()) {
+  @if (!isEditMode()) {
+    <nav class="dashboard-nav" mat-tab-nav-bar [tabPanel]="tabPanel">
+      @for (tab of dashboard()!.tabs; track tab.title) {
+        <a mat-tab-link
+           [routerLink]="['/dashboard', dashboardId(), tab.id]"
+           (click)="changeActiveTab(tab.id)"
+           [active]="activeLink() == tab.id"> {{tab.title}} </a>
+      }
+      <div class="dashboard-controls">
+        <button matIconButton type="button" (click)="enterEditMode()">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button matIconButton type="button" (click)="deleteDashboard()">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </nav>
+  } @else {
+    <div class="edit-mode">
+      <mat-form-field>
+        <input matInput type="text" [value]="dashboardId()">
+      </mat-form-field>
+      <div class="edit-controls">
+        <button matButton="filled" type="button" (click)="closeEditMode()">Cancel</button>
+        <button matButton="filled" type="button">Save</button>
+      </div>
+    </div>
+  }
+    <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+  @if (currentTab()) {
+    <router-outlet />
+  }
+} @else {
+  <div class="empty-dashboard">You don’t have any dashboards yet. They’ll appear here as soon as you create them.</div>
+}

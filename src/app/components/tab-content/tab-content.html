@@ -1,0 +1,11 @@
+@if (cards()) {
+  @for (card of cards(); track card) {
+    <app-card [card]="card"/>
+  }
+}
+@if (isEditMode()) {
+  <button matFab extended class="add-card-button" (click)="addCard()">
+    <mat-icon>add</mat-icon>
+    Add Card
+  </button>
+}

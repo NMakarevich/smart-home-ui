@@ -1,0 +1,26 @@
+@if (layout() !== 'singleDevice') {
+  <div class="layout" [ngClass]="layoutClass()">
+    <div class="label-wrapper">
+      <mat-icon [appHighlightDevice]="item()">{{ item().icon }}</mat-icon>
+      <span>{{ item().label }}</span></div>
+    @if (item().type === 'sensor') {
+      <span class="last-element">{{item().value! | sensorValue}}</span>
+    } @else {
+      <mat-slide-toggle class="last-element" [checked]="item().state" (change)="toggleDevice($event)" />
+    }
+  </div>
+} @else {
+  <div class="layout horizontal">
+    <span>{{item().label}}</span>
+    @if (item().type === 'device') {
+      <button matIconButton (click)="toggleDevice()">
+        <mat-icon [appHighlightDevice]="item()">{{ item().icon }}
+        </mat-icon>
+      </button>
+    } @else {
+      <mat-icon>{{ item().icon }}</mat-icon>
+      <span class="last-element">{{item().value! | sensorValue}}</span>
+    }
+  </div>
+}
+
