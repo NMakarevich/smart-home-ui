@@ -1,4 +1,4 @@
-@if (isAuthorized$ | async) {
+@if (isAuthorized()?.valueOf()) {
   <div class="sidenav-toggle-container" [ngClass]="[!isMobile() ? 'hidden' : '', sidenav()?.opened ? 'opened' : '']">
     <button matIconButton class="sidenav-toggle" (click)="sidenav()?.toggle()">
       <mat-icon>{{sidenav()?.opened ? 'menu_open' : 'menu'}}</mat-icon>
@@ -6,13 +6,13 @@
   </div>
 }
 <mat-sidenav-container hasBackdrop="false">
-  @if (isAuthorized$ | async) {
+  @if (isAuthorized()) {
     <mat-sidenav mode="push" [autoFocus]="false" [opened]="!isMobile()">
       <div class="sidenav-content">
         <div class="sidenav-header">
           <h2>Smart Home UI</h2>
         </div>
-        @if (dashboards$ | async; as dashboards) {
+        @if (dashboards(); as dashboards) {
           <app-menu [dashboards]="dashboards" />
         }
         <app-sidebar-footer/>

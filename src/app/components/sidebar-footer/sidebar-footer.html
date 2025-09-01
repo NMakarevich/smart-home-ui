@@ -1,4 +1,4 @@
-@if (profile$ | async; as profile) {
+@if (profile(); as profile) {
   <button matButton (click)="addDashboard()">
     <mat-icon>add</mat-icon>
     Add Dashboard

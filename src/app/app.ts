@@ -11,6 +11,7 @@ import { Auth } from './services/auth';
 import { Store } from '@ngrx/store';
 import { selectDashboardList } from './store/dashboard.selectors';
 import * as DashboardActions from './store/dashboard.actions';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-root',
@@ -30,12 +31,10 @@ import * as DashboardActions from './store/dashboard.actions';
 export class App {
   protected readonly title = signal('smart-home-ui');
   private readonly store = inject(Store);
+  private readonly auth = inject(Auth);
 
-  dashboards$ = this.store.select(selectDashboardList);
-
-  auth = inject(Auth);
-
-  isAuthorized$ = this.auth.authStatus;
+  dashboards = toSignal(this.store.select(selectDashboardList));
+  isAuthorized = toSignal(this.auth.authStatus);
 
   sidenav = viewChild(MatSidenav);
 
