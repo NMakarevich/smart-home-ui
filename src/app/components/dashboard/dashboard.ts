@@ -1,8 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
-import { TabContent } from '../tab-content/tab-content';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,10 +20,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-dashboard',
   imports: [
-    AsyncPipe,
     MatTabsModule,
     RouterLink,
-    TabContent,
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
@@ -56,7 +52,7 @@ export class Dashboard {
       const dashboardId = params.get('dashboardId');
       if (dashboardId) {
         this.store.dispatch(DashboardActions.saveDashboardId({ dashboardId }));
-      }
+      } else this.store.dispatch(DashboardActions.setDefaultDashboardId());
     });
   }
 

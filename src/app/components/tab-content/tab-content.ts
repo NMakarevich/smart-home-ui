@@ -7,12 +7,11 @@ import { AddCard } from '../add-card/add-card';
 import { DashboardService } from '../../services/dashboard.service';
 import { Store } from '@ngrx/store';
 import { selectCards } from '../../store/dashboard.selectors';
-import { AsyncPipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-tab-content',
-  imports: [Card, MatButtonModule, MatIconModule, AsyncPipe],
+  imports: [Card, MatButtonModule, MatIconModule],
   templateUrl: './tab-content.html',
   standalone: true,
   styleUrl: './tab-content.scss',
