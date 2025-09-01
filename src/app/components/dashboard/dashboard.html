@@ -17,13 +17,15 @@
       </div>
     </nav>
   } @else {
+    <div class="edit-mode">
       <mat-form-field>
-        <input matInput type="text">
+        <input matInput type="text" [value]="dashboardId()">
       </mat-form-field>
-      <div class="dashboard-controls">
+      <div class="edit-controls">
         <button matButton="filled" type="button" (click)="closeEditMode()">Cancel</button>
         <button matButton="filled" type="button">Save</button>
       </div>
+    </div>
   }
     <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
   @if (currentTab()) {
