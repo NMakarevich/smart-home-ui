@@ -6,6 +6,7 @@ import { concatMap, map, of, switchMap, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
+  selectCurrentDashboard,
   selectDashboardId,
   selectDashboardList,
   selectIds,
@@ -20,20 +21,20 @@ export const loadDashboardList = createEffect(
     store = inject(Store),
   ) => {
     return actions$.pipe(
-      ofType(DashboardActions.loadDashboards),
+      ofType(DashboardActions.loadDashboardsList),
       switchMap(() => store.select(selectDashboardList)),
       switchMap((dashboardList) => {
         if (!dashboardList)
-          return dashboardService
-            .getDashboards()
-            .pipe(
-              map((dashboardList) =>
-                DashboardActions.saveDashboards({ dashboards: dashboardList }),
-              ),
-            );
+          return dashboardService.getDashboards().pipe(
+            map((dashboardList) =>
+              DashboardActions.saveDashboardsList({
+                dashboards: dashboardList,
+              }),
+            ),
+          );
         else
           return of(
-            DashboardActions.saveDashboards({ dashboards: dashboardList }),
+            DashboardActions.saveDashboardsList({ dashboards: dashboardList }),
           );
       }),
     );
@@ -44,13 +45,14 @@ export const loadDashboardList = createEffect(
 export const saveDashboards = createEffect(
   (actions$ = inject(Actions), store = inject(Store)) =>
     actions$.pipe(
-      ofType(DashboardActions.saveDashboards),
+      ofType(DashboardActions.saveDashboardsList),
       switchMap(({ dashboards }) =>
         store.select(selectDashboardId).pipe(
           map((dashboardId) => {
-            if (dashboardId) return DashboardActions.loadTabs({ dashboardId });
+            if (dashboardId)
+              return DashboardActions.loadDashboard({ dashboardId });
             else
-              return DashboardActions.loadTabs({
+              return DashboardActions.loadDashboard({
                 dashboardId: dashboards[0].id,
               });
           }),
@@ -60,10 +62,10 @@ export const saveDashboards = createEffect(
   { functional: true },
 );
 
-export const loadTabs = createEffect(
+export const loadDashboard = createEffect(
   (actions$ = inject(Actions), dashboardService = inject(DashboardService)) =>
     actions$.pipe(
-      ofType(DashboardActions.loadTabs),
+      ofType(DashboardActions.loadDashboard),
       concatMap(({ dashboardId }) =>
         dashboardService.getDashboard(dashboardId).pipe(
           map((dashboard) => {
@@ -75,24 +77,59 @@ export const loadTabs = createEffect(
   { functional: true },
 );
 
-export const setTab = createEffect(
+export const setDefaultDashboardId = createEffect(
+  (actions$ = inject(Actions), store = inject(Store)) =>
+    actions$.pipe(
+      ofType(DashboardActions.setDefaultDashboardId),
+      switchMap(() =>
+        store.select(selectDashboardList).pipe(
+          map((dashboardList) => {
+            if (dashboardList)
+              return DashboardActions.saveDashboardId({
+                dashboardId: dashboardList[0].id,
+              });
+            else return DashboardActions.saveDashboardId({ dashboardId: null });
+          }),
+        ),
+      ),
+    ),
+  { functional: true },
+);
+
+export const saveCurrentTabId = createEffect(
+  (actions$ = inject(Actions), store = inject(Store)) =>
+    actions$.pipe(
+      ofType(DashboardActions.saveCurrentDashboard),
+      switchMap(() =>
+        store.select(selectCurrentDashboard).pipe(
+          map((dashboard) => {
+            if (dashboard && dashboard.tabs.length) {
+              return DashboardActions.saveTabId({
+                tabId: dashboard.tabs[0].id,
+              });
+            } else return DashboardActions.saveTabId({ tabId: null });
+          }),
+        ),
+      ),
+    ),
+  { functional: true },
+);
+
+export const navigate = createEffect(
   (
     actions$ = inject(Actions),
     router = inject(Router),
     store = inject(Store),
   ) =>
     actions$.pipe(
-      ofType(DashboardActions.saveCurrentDashboard),
-      switchMap(({ dashboard }) =>
+      ofType(DashboardActions.saveTabId),
+      switchMap(() =>
         store.select(selectIds).pipe(
           tap(({ dashboardId, tabId }) => {
-            if (dashboardId && tabId) {
-              router.navigate([
-                '/dashboard',
-                dashboardId,
-                dashboard.tabs[0].id,
-              ]);
-            }
+            if (dashboardId && tabId)
+              router.navigate(['dashboard', dashboardId, tabId]);
+            else if (dashboardId && !tabId)
+              router.navigate(['dashboard', dashboardId]);
           }),
         ),
       ),
@@ -139,17 +176,20 @@ export const addDashboard = createEffect(
 export const addDashboardSuccessful = createEffect(
   (
     actions$ = inject(Actions),
-    router = inject(Router),
     dialog = inject(DialogService),
+    store = inject(Store),
   ) =>
     actions$.pipe(
       ofType(DashboardActions.addDashboardSuccessful),
-      tap(({ dashboard }) => {
+      map(({ dashboard }) => {
+        return DashboardActions.saveDashboardId({ dashboardId: dashboard.id });
+      }),
+      tap(({ dashboardId }) => {
+        store.dispatch(DashboardActions.saveTabId({ tabId: null }));
         dialog.closeDialog();
-        router.navigate(['dashboard', dashboard.id]);
       }),
     ),
-  { functional: true, dispatch: false },
+  { functional: true },
 );
 
 export const deleteDashboardSuccessful = createEffect(

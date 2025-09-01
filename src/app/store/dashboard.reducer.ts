@@ -21,7 +21,7 @@ const initialState: DashboardState = {
 
 export const dashboardReducer = createReducer(
   initialState,
-  on(DashboardActions.saveDashboards, (state, payload) => ({
+  on(DashboardActions.saveDashboardsList, (state, payload) => ({
     ...state,
     dashboardList: payload.dashboards,
   })),

@@ -4,26 +4,31 @@ import {
   DashboardsInterface,
 } from '../interfaces/smart-home-response';
 
-export const loadDashboards = createAction('[Dashboard] Load Dashboards list');
-export const saveDashboards = createAction(
+export const loadDashboardsList = createAction(
+  '[Dashboard] Load Dashboards list',
+);
+export const saveDashboardsList = createAction(
   '[Dashboard] Save Dashboards list',
   props<{ dashboards: DashboardsInterface[] }>(),
 );
-export const loadTabs = createAction(
-  '[Dashboard] Load Tabs',
+export const loadDashboard = createAction(
+  '[Dashboard] Load Dashboard',
   props<{ dashboardId: string }>(),
 );
 export const saveCurrentDashboard = createAction(
   '[Dashboard] Save Current Dashboard',
   props<{ dashboard: DashboardInterface }>(),
 );
-export const saveTabId = createAction(
-  '[Dashboard] Save Current Tab id',
-  props<{ tabId: string }>(),
-);
 export const saveDashboardId = createAction(
   '[Dashboard] Save Current DashboardId',
-  props<{ dashboardId: string }>(),
+  props<{ dashboardId: string | null }>(),
+);
+export const setDefaultDashboardId = createAction(
+  '[Dashboard] Set Default DashboardId',
+);
+export const saveTabId = createAction(
+  '[Dashboard] Save Current Tab id',
+  props<{ tabId: string | null }>(),
 );
 export const addDashboard = createAction(
   '[Dashboard] Add Dashboard',

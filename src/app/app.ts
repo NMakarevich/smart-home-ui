@@ -45,7 +45,7 @@ export class App {
   private readonly _mobileQueryListener: () => void;
 
   constructor() {
-    this.store.dispatch(DashboardActions.loadDashboards());
+    this.store.dispatch(DashboardActions.loadDashboardsList());
     const media = inject(MediaMatcher);
 
     this._mobileQuery = media.matchMedia('(max-width: 600px)');
